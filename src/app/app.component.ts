@@ -4,4 +4,8 @@ import { Component } from "@angular/core";
   selector: "app-root",
   templateUrl: "./app.component.html",
 })
-export class AppComponent {}
+export class AppComponent {
+  getRandom(): string {
+    return (Math.random() * 1000).toString();
+  }
+}
