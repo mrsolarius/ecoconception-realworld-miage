@@ -3,35 +3,36 @@ import { Routes, RouterModule, PreloadAllModules } from "@angular/router";
 import { UserService } from "./core/services/user.service";
 import { map } from "rxjs/operators";
 import { ProfileComponent } from "./features/profile/profile.component";
+import { HomeComponent } from "./features/home/home.component";
+import { AuthComponent } from "./core/auth/auth.component";
+import { SettingsComponent } from "./features/settings/settings.component";
+import { ProfileArticlesComponent } from "./features/profile/profile-articles.component";
+import { ProfileFavoritesComponent } from "./features/profile/profile-favorites.component";
+import { EditorComponent } from "./features/editor/editor.component";
+import { ArticleComponent } from "./features/article/article.component";
 
 const routes: Routes = [
   {
     path: "",
-    loadComponent: () =>
-      import("./features/home/home.component").then((m) => m.HomeComponent),
+    component: HomeComponent,
   },
   {
     path: "login",
-    loadComponent: () =>
-      import("./core/auth/auth.component").then((m) => m.AuthComponent),
+    component: AuthComponent,
     canActivate: [
       () => inject(UserService).isAuthenticated.pipe(map((isAuth) => !isAuth)),
     ],
   },
   {
     path: "register",
-    loadComponent: () =>
-      import("./core/auth/auth.component").then((m) => m.AuthComponent),
+    component: AuthComponent,
     canActivate: [
       () => inject(UserService).isAuthenticated.pipe(map((isAuth) => !isAuth)),
     ],
   },
   {
     path: "settings",
-    loadComponent: () =>
-      import("./features/settings/settings.component").then(
-        (m) => m.SettingsComponent
-      ),
+    component: SettingsComponent,
     canActivate: [() => inject(UserService).isAuthenticated],
   },
   {
@@ -43,17 +44,11 @@ const routes: Routes = [
         children: [
           {
             path: "",
-            loadComponent: () =>
-              import("./features/profile/profile-articles.component").then(
-                (m) => m.ProfileArticlesComponent
-              ),
+            component: ProfileArticlesComponent,
           },
           {
             path: "favorites",
-            loadComponent: () =>
-              import("./features/profile/profile-favorites.component").then(
-                (m) => m.ProfileFavoritesComponent
-              ),
+            component: ProfileFavoritesComponent,
           },
         ],
       },
@@ -64,28 +59,19 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        loadComponent: () =>
-          import("./features/editor/editor.component").then(
-            (m) => m.EditorComponent
-          ),
+        component: EditorComponent,
         canActivate: [() => inject(UserService).isAuthenticated],
       },
       {
         path: ":slug",
-        loadComponent: () =>
-          import("./features/editor/editor.component").then(
-            (m) => m.EditorComponent
-          ),
+        component: EditorComponent,
         canActivate: [() => inject(UserService).isAuthenticated],
       },
     ],
   },
   {
     path: "article/:slug",
-    loadComponent: () =>
-      import("./features/article/article.component").then(
-        (m) => m.ArticleComponent
-      ),
+    component: ArticleComponent,
   },
 ];
 
